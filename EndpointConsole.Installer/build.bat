@@ -3,6 +3,8 @@ setlocal
 
 set "SCRIPT_DIR=%~dp0"
 set "PROJECT=%SCRIPT_DIR%EndpointConsole.Installer.wixproj"
+set "WPF_PROJECT=%SCRIPT_DIR%..\EndpointConsole.Wpf\EndpointConsole.Wpf.csproj"
+set "PUBLISH_DIR=%SCRIPT_DIR%..\artifacts\publish\EndpointConsole.Wpf"
 set "CONFIGURATION=%~1"
 set "PRODUCT_VERSION=%~2"
 
@@ -19,15 +21,29 @@ if not exist "%PROJECT%" (
     exit /b 1
 )
 
+if not exist "%WPF_PROJECT%" (
+    echo [ERROR] WPF project not found: %WPF_PROJECT%
+    exit /b 1
+)
+
+echo Publishing WPF app...
+echo   Project: %WPF_PROJECT%
+echo   PublishDir: %PUBLISH_DIR%
+dotnet publish "%WPF_PROJECT%" -c %CONFIGURATION% -o "%PUBLISH_DIR%" -p:SelfContained=false -p:PublishSingleFile=false -p:PublishReadyToRun=false
+if errorlevel 1 (
+    echo [ERROR] WPF publish failed.
+    exit /b 1
+)
+
 echo Building installer...
 echo   Project: %PROJECT%
 echo   Configuration: %CONFIGURATION%
 if not "%PRODUCT_VERSION%"=="" echo   ProductVersion: %PRODUCT_VERSION%
 
 if "%PRODUCT_VERSION%"=="" (
-    dotnet build "%PROJECT%" -c %CONFIGURATION%
+    dotnet build "%PROJECT%" -c %CONFIGURATION% -p:AppPublishDir="%PUBLISH_DIR%"
 ) else (
-    dotnet build "%PROJECT%" -c %CONFIGURATION% -p:ProductVersion=%PRODUCT_VERSION%
+    dotnet build "%PROJECT%" -c %CONFIGURATION% -p:ProductVersion=%PRODUCT_VERSION% -p:AppPublishDir="%PUBLISH_DIR%"
 )
 
 if errorlevel 1 (

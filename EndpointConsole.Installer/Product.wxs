@@ -28,9 +28,9 @@
 
   <Fragment>
     <ComponentGroup Id="AppFiles" Directory="INSTALLFOLDER">
-      <Files Include="$(var.PublishDir)**">
-        <Exclude Files="$(var.PublishDir)**\*.pdb" />
-        <Exclude Files="$(var.PublishDir)**\*.xml" />
+      <Files Include="$(var.PublishDir)\**">
+        <Exclude Files="$(var.PublishDir)\**\*.pdb" />
+        <Exclude Files="$(var.PublishDir)\**\*.xml" />
       </Files>
     </ComponentGroup>
   </Fragment>
