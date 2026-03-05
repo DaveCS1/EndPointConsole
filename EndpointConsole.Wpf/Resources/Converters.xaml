@@ -1,0 +1,8 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:converters="clr-namespace:EndpointConsole.Wpf.Converters">
+    <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    <converters:NullToBoolConverter x:Key="NullToBoolConverter" />
+    <converters:ServiceStatusToTextConverter x:Key="ServiceStatusToTextConverter" />
+    <converters:SeverityToVisibilityConverter x:Key="SeverityToVisibilityConverter" />
+</ResourceDictionary>

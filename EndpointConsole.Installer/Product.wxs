@@ -1,0 +1,59 @@
+<Wix
+  xmlns="http://wixtoolset.org/schemas/v4/wxs"
+  xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+  <Package
+    Name="EndpointConsole"
+    Manufacturer="EndpointConsole"
+    Version="$(var.ProductVersion)"
+    UpgradeCode="11E6D0B9-F907-4E72-91FD-16AF1144C31A"
+    Language="1033">
+    <MajorUpgrade DowngradeErrorMessage="A newer version of EndpointConsole is already installed." />
+    <MediaTemplate EmbedCab="yes" />
+
+    <StandardDirectory Id="ProgramFiles64Folder">
+      <Directory Id="INSTALLFOLDER" Name="EndpointConsole" />
+    </StandardDirectory>
+    <StandardDirectory Id="ProgramMenuFolder">
+      <Directory Id="ProgramMenuDir" Name="EndpointConsole" />
+    </StandardDirectory>
+
+    <Feature Id="MainFeature" Title="EndpointConsole" Level="1">
+      <ComponentGroupRef Id="AppFiles" />
+      <ComponentRef Id="InstallRegistry" />
+      <ComponentRef Id="StartMenuShortcut" />
+    </Feature>
+
+    <ui:WixUI Id="WixUI_InstallDir" InstallDirectory="INSTALLFOLDER" />
+  </Package>
+
+  <Fragment>
+    <ComponentGroup Id="AppFiles" Directory="INSTALLFOLDER">
+      <Files Include="$(var.PublishDir)**">
+        <Exclude Files="$(var.PublishDir)**\*.pdb" />
+        <Exclude Files="$(var.PublishDir)**\*.xml" />
+      </Files>
+    </ComponentGroup>
+  </Fragment>
+
+  <Fragment>
+    <Component Id="InstallRegistry" Directory="INSTALLFOLDER" Guid="*">
+      <RegistryKey Root="HKLM" Key="Software\EndpointConsole">
+        <RegistryValue Name="InstallPath" Type="string" Value="[INSTALLFOLDER]" KeyPath="yes" />
+        <RegistryValue Name="Version" Type="string" Value="$(var.ProductVersion)" />
+      </RegistryKey>
+    </Component>
+  </Fragment>
+
+  <Fragment>
+    <Component Id="StartMenuShortcut" Directory="ProgramMenuDir" Guid="*">
+      <Shortcut
+        Id="EndpointConsoleStartMenuShortcut"
+        Name="EndpointConsole"
+        Description="Endpoint diagnostics console"
+        Target="[INSTALLFOLDER]EndpointConsole.Wpf.exe"
+        WorkingDirectory="INSTALLFOLDER" />
+      <RemoveFolder Id="ProgramMenuDir" On="uninstall" />
+      <RegistryValue Root="HKCU" Key="Software\EndpointConsole" Name="StartMenuShortcut" Type="integer" Value="1" KeyPath="yes" />
+    </Component>
+  </Fragment>
+</Wix>

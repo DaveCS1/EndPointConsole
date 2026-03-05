@@ -1,0 +1,21 @@
+<Project Sdk="WixToolset.Sdk/5.0.2">
+  <PropertyGroup>
+    <OutputType>Package</OutputType>
+    <Platform>x64</Platform>
+    <InstallerPlatform>x64</InstallerPlatform>
+    <ProductVersion Condition="'$(ProductVersion)' == ''">1.0.0</ProductVersion>
+    <AppPublishDir>$(MSBuildThisFileDirectory)..\artifacts\publish\EndpointConsole.Wpf\</AppPublishDir>
+    <DefineConstants>ProductVersion=$(ProductVersion);PublishDir=$(AppPublishDir)</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="WixToolset.UI.wixext" Version="5.0.2" />
+  </ItemGroup>
+
+  <Target Name="PublishWpfApp" BeforeTargets="Build">
+    <MSBuild
+      Projects="..\EndpointConsole.Wpf\EndpointConsole.Wpf.csproj"
+      Targets="Publish"
+      Properties="Configuration=$(Configuration);PublishDir=$(AppPublishDir);SelfContained=false;PublishSingleFile=false;PublishReadyToRun=false" />
+  </Target>
+</Project>
