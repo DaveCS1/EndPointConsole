@@ -4,7 +4,7 @@
     <Platform>x64</Platform>
     <InstallerPlatform>x64</InstallerPlatform>
     <ProductVersion Condition="'$(ProductVersion)' == ''">1.0.0</ProductVersion>
-    <AppPublishDir>$(MSBuildThisFileDirectory)..\artifacts\publish\EndpointConsole.Wpf\</AppPublishDir>
+    <AppPublishDir>$(MSBuildThisFileDirectory)..\artifacts\publish\EndpointConsole.Wpf</AppPublishDir>
     <DefineConstants>ProductVersion=$(ProductVersion);PublishDir=$(AppPublishDir)</DefineConstants>
   </PropertyGroup>
 
