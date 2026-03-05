@@ -88,9 +88,9 @@ Then open a Pull Request.
 Batch helper:
 
 ```powershell
-EndpointConsole.Installer\build-installer.bat
-EndpointConsole.Installer\build-installer.bat Debug
-EndpointConsole.Installer\build-installer.bat Release 1.1.0
+EndpointConsole.Installer\build.bat
+EndpointConsole.Installer\build.bat Debug
+EndpointConsole.Installer\build.bat Release 1.1.0
 ```
 
 Direct command:
@@ -151,7 +151,7 @@ Installer project shows incompatible in Visual Studio:
 
 Installer build fails in IDE but works in CLI:
 
-- Build from terminal using `build-installer.bat` or `dotnet build ...wixproj`.
+- Build from terminal using `build.bat` or `dotnet build ...wixproj`.
 
 WPF app does not launch:
 

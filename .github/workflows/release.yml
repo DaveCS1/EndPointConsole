@@ -1,0 +1,57 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release-msi:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore
+        run: dotnet restore EndPointConsole.sln
+
+      - name: Build
+        run: dotnet build EndPointConsole.sln -c Release --no-restore
+
+      - name: Test
+        run: dotnet test EndpointConsole.Tests/EndpointConsole.Tests.csproj -c Release --no-build
+
+      - name: Set product version from tag
+        if: startsWith(github.ref, 'refs/tags/')
+        shell: pwsh
+        run: |
+          $version = "${{ github.ref_name }}".TrimStart('v')
+          "PRODUCT_VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Build MSI
+        run: EndpointConsole.Installer\build.bat Release %PRODUCT_VERSION%
+        shell: cmd
+
+      - name: Upload MSI artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: endpointconsole-msi-release
+          path: EndpointConsole.Installer/bin/x64/Release/*.msi
+          if-no-files-found: error
+
+      - name: Publish GitHub release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: EndpointConsole.Installer/bin/x64/Release/*.msi
