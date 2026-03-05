@@ -92,6 +92,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
                     <TextBlock Text="Event Log Issues" Style="{DynamicResource SectionTitleTextStyle}" />
@@ -110,6 +111,14 @@
                             <DataGridTextColumn Header="Message" Binding="{Binding Message}" Width="2*" />
                         </DataGrid.Columns>
                     </DataGrid>
+
+                    <Border Grid.Row="2"
+                            Margin="{DynamicResource Space.TopSmall}"
+                            Padding="{DynamicResource Space.Small}"
+                            Style="{DynamicResource ContentSurfaceBorderStyle}"
+                            Visibility="{Binding OperationSeverity, Converter={StaticResource SeverityToVisibilityConverter}, ConverterParameter=Warning}">
+                        <TextBlock Text="{Binding SeverityMessage}" Style="{DynamicResource SubtleTextStyle}" />
+                    </Border>
                 </Grid>
             </Border>
 
@@ -120,7 +129,6 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
-                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
                     <TextBlock Text="Registry Values" Style="{DynamicResource SectionTitleTextStyle}" />
@@ -136,14 +144,6 @@
                             <DataGridTextColumn Header="Value" Binding="{Binding Value}" Width="*" />
                         </DataGrid.Columns>
                     </DataGrid>
-
-                    <Border Grid.Row="2"
-                            Margin="{DynamicResource Space.TopSmall}"
-                            Padding="{DynamicResource Space.Small}"
-                            Style="{DynamicResource ContentSurfaceBorderStyle}"
-                            Visibility="{Binding OperationSeverity, Converter={StaticResource SeverityToVisibilityConverter}, ConverterParameter=Warning}">
-                        <TextBlock Text="{Binding SeverityMessage}" Style="{DynamicResource SubtleTextStyle}" />
-                    </Border>
                 </Grid>
             </Border>
         </Grid>
